@@ -6,19 +6,21 @@ import time
 from time import gmtime, strftime
 import datetime
 
-#set var voor kleur limiten
+#set var voor welken geluid leves nodig zijn om de lampjes aan te doen
 greenLed = 10
 blueLed = 20
 redLed = 60
 
+#set de var voor de aio client
 aio = Client('Nizari', 'aio_rsem169oLOMV5K89rjq9Unaut2dB')
 
+#ophalen van de locatie data
 locationOne = aio.receive_previous('location')
 
 print(format(locationOne.value))
 
 
-
+#functie om de huidige tijd op te halen
 def printDateTime():
   textTime = strftime("%H:%M")
   print ('time updated')
@@ -26,6 +28,7 @@ def printDateTime():
   lcd_string(textTime ,LCD_LINE_2)
   return
 
+#led interface mapping
 def getInterfaceAddress(ifname):
   try:
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -38,7 +41,7 @@ def getInterfaceAddress(ifname):
     return ''
 
 
-# Define GPIO to LCD mapping
+#Pin mapping
 LCD_RS = 26
 LCD_E  = 19
 LCD_D4 = 0 #13
@@ -46,15 +49,12 @@ LCD_D5 = 6
 LCD_D6 = 5
 LCD_D7 = 11
 
-RED = 12
-GREEN = 18
-BLUE = 13
 
-# Define some device constants
+#Def van de dicplay zoals char limit
 LCD_WIDTH = 16    # Maximum characters per line
 LCD_CHR = True
 LCD_CMD = False
-
+#Def van de lines van de display
 LCD_LINE_1 = 0x80 # LCD RAM address for the 1st line
 LCD_LINE_2 = 0xC0 # LCD RAM address for the 2nd line
 
@@ -87,6 +87,7 @@ def main():
       time.sleep(1)
       index += 1
 
+#functie voor het ophalen van de data vannuit adafruit van de laaste 5 minuten
 def CollectDbData():
     AveArray = []
     data = aio.data('sound-levels')
@@ -95,7 +96,7 @@ def CollectDbData():
     NewTime = CurTime - SubTime
     NewTime = NewTime.strftime("%Y-%m-%d %H:%M:%S")
     NewTime = datetime.datetime.strptime(NewTime, "%Y-%m-%d %H:%M:%S")
-
+#goed zetten van de tijd vanuit adafruit zodat we het kunnen vergelijken
     for d in data:
         SoundVal = format(d.value)
         TimeVal = format(d.created_at)
@@ -109,7 +110,8 @@ def CollectDbData():
             AveArray.append(SoundVal)
     for i in range(0, len(AveArray)):
         AveArray[i] = int(AveArray[i])
-        
+    
+	#het berekenen van de gemiddelde van de afgelopen 5 minuten
     length = len(AveArray)
     total = sum(AveArray)
     averageRound = 0
@@ -128,6 +130,7 @@ def CollectDbData():
     GPIO.setup(BLUE,GPIO.OUT)
     GPIO.output(BLUE,0)
     
+	#lampjes aan en uit zetten aan de hand van de laaste 5 minuten
     print (averageRound)
     if averageRound <= greenLed:
         GPIO.output(RED,100)
@@ -147,6 +150,9 @@ def CollectDbData():
 
     #time.sleep(60)
 
+
+
+#code vanuit een lib voor het instellen van de display
 def lcd_init():
   # Initialise display
   lcd_byte(0x33,LCD_CMD) # 110011 Initialise
