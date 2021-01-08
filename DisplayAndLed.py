@@ -12,7 +12,7 @@ blueLed = 20
 redLed = 60
 
 #set de var voor de aio client
-aio = Client('Nizari', 'aio_rsem169oLOMV5K89rjq9Unaut2dB')
+aio = Client('Nizari', '')
 
 #ophalen van de locatie data
 locationOne = aio.receive_previous('location')
