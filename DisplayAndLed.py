@@ -51,22 +51,22 @@ LCD_D7 = 11
 
 
 #Def van de dicplay zoals char limit
-LCD_WIDTH = 16    # Maximum characters per line
+LCD_WIDTH = 16    #max chars per line
 LCD_CHR = True
 LCD_CMD = False
 #Def van de lines van de display
-LCD_LINE_1 = 0x80 # LCD RAM address for the 1st line
-LCD_LINE_2 = 0xC0 # LCD RAM address for the 2nd line
+LCD_LINE_1 = 0x80 #line 1 display
+LCD_LINE_2 = 0xC0 #line 2 dicplay
 
 # Timing constants
 E_PULSE = 0.0005
 E_DELAY = 0.0005
 
 def main():
-  # Main program block
+
   
   GPIO.setwarnings(False)
-  GPIO.setmode(GPIO.BCM)       # Use BCM GPIO numbers
+  GPIO.setmode(GPIO.BCM)     
   GPIO.setup(LCD_E, GPIO.OUT)  # E
   GPIO.setup(LCD_RS, GPIO.OUT) # RS
   GPIO.setup(LCD_D4, GPIO.OUT) # DB4
@@ -74,7 +74,7 @@ def main():
   GPIO.setup(LCD_D6, GPIO.OUT) # DB6
   GPIO.setup(LCD_D7, GPIO.OUT) # DB7
 
-  # Initialise display
+
   lcd_init()
 
   while True:
