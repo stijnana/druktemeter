@@ -4,21 +4,27 @@ import time as yotimma
 import numpy as np
 import sounddevice as sd
 
+#Connectie met de adafruit api
 aio = Client('Nizari' , 'aio_rsem169oLOMV5K89rjq9Unaut2dB')
 
+#setten van de pins
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 PIR_PIN = 3
 GPIO.setup(PIR_PIN, GPIO.IN)
 
+#print dat de code ready is
 print('Starting up the PIR Module (click on STOP to exit)')
 print('Ready')
 
 totalDb = []
 
-duration = 3 #in seconds
-aio = Client('Nizari' , 'aio_rsem169oLOMV5K89rjq9Unaut2dB')
 
+#over hoeveel tijd wil je het gemidelde pakken van hoe druk het is
+duration = 3 #in seconds
+
+
+#functie die ophaalt wat de geluids levels zijn
 def audio_callback(indata, frames, time, status):
     volume_norm = np.linalg.norm(indata) * 10
     volume_norm = int(volume_norm)
@@ -26,7 +32,7 @@ def audio_callback(indata, frames, time, status):
     print(volume_norm)
     
     
-
+#send via de adafuit api data naar het dashboard
 def send_data(dbArray):
     length = len(dbArray)
     total = sum(dbArray)
@@ -38,8 +44,8 @@ def send_data(dbArray):
 
     totalDb.clear()
     
-    
-    
+     
+#de check of er beweging is te zien voor de sensoren als er beweging is erkent start hij de opnamen van een gemidlde geluids levels  
 while True:
   if GPIO.input(PIR_PIN):
     print('Motion Detected')
