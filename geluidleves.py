@@ -5,7 +5,7 @@ import numpy as np
 import sounddevice as sd
 
 #Connectie met de adafruit api
-aio = Client('Nizari' , 'aio_rsem169oLOMV5K89rjq9Unaut2dB')
+aio = Client('Nizari' , '')
 
 #setten van de pins
 GPIO.setmode(GPIO.BCM)
