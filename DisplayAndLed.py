@@ -41,13 +41,14 @@ def getInterfaceAddress(ifname):
     return ''
 
 
-#Pin mapping
+#Pin mapping RGB ledjes
 LCD_RS = 26
 LCD_E  = 19
 LCD_D4 = 0 #13
 LCD_D5 = 6
 LCD_D6 = 5
 LCD_D7 = 11
+
 
 
 #Def van de dicplay zoals char limit
@@ -64,7 +65,7 @@ E_DELAY = 0.0005
 
 def main():
 
-  
+  #pin maping display
   GPIO.setwarnings(False)
   GPIO.setmode(GPIO.BCM)     
   GPIO.setup(LCD_E, GPIO.OUT)  # E
